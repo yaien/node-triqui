@@ -24,7 +24,9 @@ jobs:
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
 
-      - run: yarn install
+      - run:
+          name: Install package dependencies
+          command: yarn install
 
       - save_cache:
           paths:
@@ -32,4 +34,14 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
 
       # run tests!
-      - run: yarn test
+      - run:
+        name: Unit Tests
+        command: yarn test
+        enviroment:
+          JEST_JUNIT_OUTPUT: "results/jest/results.xml"
+
+      - store_artifacts:
+        path: results
+
+      - store_test_results:
+        path: results
