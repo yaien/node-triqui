@@ -1,0 +1,112 @@
+swagger: "2.0"
+info:
+  description: This is a tic tac toe online game
+  version: 1.0.0
+  title: Tic Tac Toe
+
+basePath: /v1
+
+tags:
+  - name: room
+    description: Game rooms
+
+paths:
+  /rooms/create:
+    post:
+      tags:
+        - room
+      summary: create a new room and save the current player
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            type: object
+            properties:
+              player:
+                description: A Name between 4 and 30 characters
+                type: string
+      responses:
+        "200":
+          description: Success creation
+          schema:
+            $ref: "#/components/schemas/RoomResponse"
+        "400":
+          description: Invalid Request
+          schema:
+            $ref: "#/components/schemas/ValidationError"
+  /rooms/join:
+    post:
+      tags:
+        - room
+      summary: "Join a room and save the current player"
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            type: object
+            properties:
+              player:
+                description: A Name between 4 and 30 characters
+                type: string
+              room:
+                type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/components/schemas/RoomResponse"
+        "400":
+          description: Validation Error
+          schema:
+            allOf:
+              - $ref: "#/components/schemas/ValidationError"
+              - $ref: "#/components/schemas/StatusError"
+
+definitions:
+  Player:
+    type: object
+    properties:
+      name:
+        type: string
+      _id:
+        type: string
+  Room:
+    type: object
+    properties:
+      _id:
+        type: string
+      players:
+        type: array
+        items:
+          $ref: "#/definitions/Player"
+
+components:
+  schemas:
+    RoomResponse:
+      type: object
+      properties:
+        player:
+          $ref: "#/definitions/Player"
+        room:
+          $ref: "#/definitions/Room"
+    ValidationError:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+              message:
+                type: string
+              validation:
+                type: string
+    StatusError:
+      type: object
+      properties:
+        message:
+          type: string

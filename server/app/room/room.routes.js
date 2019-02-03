@@ -1,11 +1,12 @@
 const express = require("express");
 const room = require("./room.controller");
+const valid = require("./room.validators");
 
 module.exports = app => {
   let router = express.Router({});
 
-  router.post("/create", room.create);
-  router.post("/join", room.join);
+  router.post("/create", valid.create, room.create);
+  router.post("/join", valid.join, room.join);
 
-  app.use(router);
+  app.use("/v1/rooms", router);
 };
