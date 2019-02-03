@@ -49,4 +49,4 @@ jobs:
           path: results
 
       - codecov/upload:
-        file: coverage/cover.xml
+          file: coverage/cover.xml
