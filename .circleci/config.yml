@@ -35,13 +35,13 @@ jobs:
 
       # run tests!
       - run:
-        name: Unit Tests
-        command: yarn test
-        enviroment:
-          JEST_JUNIT_OUTPUT: "results/jest/results.xml"
+          name: Unit Tests
+          command: yarn test
+          enviroment:
+            JEST_JUNIT_OUTPUT: "results/jest/results.xml"
 
       - store_artifacts:
-        path: results
+          path: results
 
       - store_test_results:
-        path: results
+          path: results
