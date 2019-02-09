@@ -7,6 +7,7 @@ module.exports = app => {
 
   router.post("/create", valid.create, room.create);
   router.post("/join", valid.join, room.join);
+  router.get("/:room", room.find);
 
   app.use("/v1/rooms", router);
 };

@@ -1,4 +1,5 @@
 const Room = require("./room.model");
+const isValid = require("mongoose").Types.ObjectId.isValid;
 
 exports.create = async (req, res) => {
   try {
@@ -22,6 +23,19 @@ exports.join = async (req, res, next) => {
     room.players.push(player);
     await room.save();
     res.send({ room, player });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.find = async (req, res, next) => {
+  try {
+    let id = req.params.room;
+    if (isValid(id)) {
+      let room = await Room.findById(req.params.room);
+      if (room) return res.send(room);
+    }
+    res.status(404).send({ message: "Room Not Found" });
   } catch (err) {
     next(err);
   }
